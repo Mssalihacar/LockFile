@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Panel | LockFile</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <aside class="sidebar">
+
+        <div class="brand sidebar-brand">
+
+            <div class="brand-symbol">
+                L
+            </div>
+
+            <div>
+                <h1>LockFile</h1>
+                <span>Dosya paneli</span>
+            </div>
+
+        </div>
+
+        <div class="user-card">
+
+            <div class="user-avatar">
+                {{ username[0]|upper }}
+            </div>
+
+            <div class="user-details">
+                <span>Aktif kullanıcı</span>
+                <strong>{{ username }}</strong>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-item active"
+            >
+                <span class="nav-icon">⌂</span>
+                Dosyalar
+            </a>
+
+        </nav>
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="logout-button"
+        >
+            Çıkış Yap
+        </a>
+
+    </aside>
+
+    <main class="dashboard-content">
+
+        <header class="dashboard-header">
+
+            <div>
+                <span class="small-label">
+                    Dosya yönetimi
+                </span>
+
+                <h2>Dosyalar</h2>
+            </div>
+
+            <div class="file-count">
+                <strong>{{ files|length }}</strong>
+                <span>dosya</span>
+            </div>
+
+        </header>
+
+        {% if message %}
+
+            <div class="alert alert-message">
+                {{ message }}
+            </div>
+
+        {% endif %}
+
+        <section class="action-grid">
+
+            <article class="action-panel">
+
+                <div class="action-header">
+
+                    <div class="action-icon upload-icon">
+                        ↑
+                    </div>
+
+                    <h3>Dosya yükle</h3>
+
+                </div>
+
+                <form
+                    action="{{ url_for('upload') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="panel-form"
+                >
+
+                    <input
+                        type="file"
+                        name="file"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Yükle
+                    </button>
+
+                </form>
+
+            </article>
+
+            <article class="action-panel">
+
+                <div class="action-header">
+
+                    <div class="action-icon permission-icon">
+                        ＋
+                    </div>
+
+                    <h3>İzin ver</h3>
+
+                </div>
+
+                <form
+                    action="{{ url_for('grant') }}"
+                    method="POST"
+                    class="panel-form"
+                >
+
+                    <input
+                        type="number"
+                        name="file_id"
+                        placeholder="Dosya ID"
+                        min="1"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        name="target_username"
+                        placeholder="Kullanıcı adı"
+                        required
+                    >
+
+                    <select
+                        name="permission_level"
+                        required
+                    >
+                        <option value="READ">
+                            Sadece açabilir
+                        </option>
+
+                        <option value="WRITE">
+                            Açabilir ve güncelleyebilir
+                        </option>
+                    </select>
+
+                    <button
+                        type="submit"
+                        class="secondary-button"
+                    >
+                        İzin Ver
+                    </button>
+
+                </form>
+
+            </article>
+
+            <article class="action-panel">
+
+                <div class="action-header">
+
+                    <div class="action-icon revoke-icon">
+                        −
+                    </div>
+
+                    <h3>İzni kaldır</h3>
+
+                </div>
+
+                <form
+                    action="{{ url_for('revoke') }}"
+                    method="POST"
+                    class="panel-form"
+                >
+
+                    <input
+                        type="number"
+                        name="file_id"
+                        placeholder="Dosya ID"
+                        min="1"
+                        required
+                    >
+
+                    <input
+                        type="text"
+                        name="target_username"
+                        placeholder="Kullanıcı adı"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        class="danger-button"
+                    >
+                        İzni Kaldır
+                    </button>
+
+                </form>
+
+            </article>
+
+        </section>
+
+        <section class="files-section">
+
+            <div class="section-header">
+                <h3>Tüm dosyalar</h3>
+            </div>
+
+            {% if files %}
+
+                <div class="file-grid">
+
+                    {% for file in files %}
+
+                        <article class="file-card">
+
+                            <div class="file-card-header">
+
+                                <div class="file-symbol">
+                                    ▤
+                                </div>
+
+                                {% if file[3] == "YETKI_YOK" %}
+
+                                    <span class="permission-badge badge-none">
+                                        İzin yok
+                                    </span>
+
+                                {% elif file[3] == "OWNER" %}
+
+                                    <span class="permission-badge badge-owner">
+                                        Sahip
+                                    </span>
+
+                                {% elif file[3] == "WRITE" %}
+
+                                    <span class="permission-badge badge-write">
+                                        Düzenleyebilir
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="permission-badge badge-read">
+                                        Açabilir
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                            <div class="file-name">
+                                {{ file[1] }}
+                            </div>
+
+                            <div class="file-meta">
+
+                                <span>
+                                    ID: {{ file[0] }}
+                                </span>
+
+                                <span>
+                                    Sahip: {{ file[2] }}
+                                </span>
+
+                            </div>
+
+                            <div class="file-card-actions">
+
+                                {% if file[3] == "YETKI_YOK" %}
+
+                                    <div class="access-denied">
+                                        Bu dosyayı açma iznin yok
+                                    </div>
+
+                                {% else %}
+
+                                    <a
+                                        href="{{ url_for('download', file_id=file[0]) }}"
+                                        class="download-button"
+                                    >
+                                        Aç ve İndir
+                                    </a>
+
+                                {% endif %}
+
+                                {% if file[3] == "OWNER"
+                                      or file[3] == "WRITE" %}
+
+                                    <form
+                                        action="{{ url_for('update_file', file_id=file[0]) }}"
+                                        method="POST"
+                                        enctype="multipart/form-data"
+                                        class="update-form"
+                                    >
+
+                                        <input
+                                            type="file"
+                                            name="file"
+                                            required
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="update-button"
+                                        >
+                                            Güncelle
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                                {% if file[3] == "OWNER" %}
+
+                                    <form
+                                        action="{{ url_for('delete_file', file_id=file[0]) }}"
+                                        method="POST"
+                                        class="delete-form"
+                                        onsubmit="return confirm('Bu dosyayı kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.');"
+                                    >
+
+                                        <button
+                                            type="submit"
+                                            class="delete-button"
+                                        >
+                                            Dosyayı Sil
+                                        </button>
+
+                                    </form>
+
+                                {% endif %}
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-symbol">
+                        ▱
+                    </div>
+
+                    <h3>Henüz dosya yok</h3>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

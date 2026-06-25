@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt | LockFile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-page">
+
+<div class="auth-container">
+
+    <section class="auth-side">
+
+        <canvas id="networkCanvas" class="network-canvas"></canvas>
+
+        <div class="brand">
+            <div class="brand-symbol">L</div>
+
+            <div>
+                <h1>LockFile</h1>
+                <span>Güvenli dosya alanı</span>
+            </div>
+        </div>
+
+        <div class="auth-visual">
+
+            <div class="visual-glow"></div>
+            <div class="visual-ring ring-one"></div>
+            <div class="visual-ring ring-two"></div>
+
+            <div class="lock-card">
+
+                <div class="rotating-lock-wrapper">
+                    <svg
+                        class="lock-svg"
+                        viewBox="0 0 160 190"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                    >
+                        <defs>
+                            <linearGradient id="lockGradientRegister" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#b7cff3"/>
+                                <stop offset="100%" stop-color="#b8abdf"/>
+                            </linearGradient>
+                        </defs>
+
+                        <path
+                            d="M45 82V58C45 28 60 12 80 12C100 12 115 28 115 58V82"
+                            fill="none"
+                            stroke="url(#lockGradientRegister)"
+                            stroke-width="16"
+                            stroke-linecap="round"
+                        />
+
+                        <rect
+                            x="25"
+                            y="72"
+                            width="110"
+                            height="100"
+                            rx="26"
+                            fill="url(#lockGradientRegister)"
+                        />
+
+                        <circle
+                            cx="80"
+                            cy="117"
+                            r="13"
+                            fill="#202739"
+                        />
+
+                        <rect
+                            x="74"
+                            y="124"
+                            width="12"
+                            height="25"
+                            rx="6"
+                            fill="#202739"
+                        />
+                    </svg>
+                </div>
+
+            </div>
+
+            <div class="visual-badge badge-one">Hesap</div>
+            <div class="visual-badge badge-two">Koruma</div>
+            <div class="visual-badge badge-three">Kontrol</div>
+
+        </div>
+
+    </section>
+
+    <section class="auth-box">
+
+        <div class="auth-heading">
+            <span class="small-label">Yeni hesap</span>
+            <h2>Kayıt ol</h2>
+        </div>
+
+        <form method="POST" class="main-form">
+
+            <div class="input-group">
+                <label for="username">Kullanıcı adı</label>
+                <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    placeholder="Kullanıcı adı belirleyin"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Parola</label>
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Parola belirleyin"
+                    autocomplete="new-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="primary-button">
+                Hesap Oluştur
+            </button>
+
+        </form>
+
+        {% if message %}
+            <div class="alert alert-error">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <div class="auth-bottom">
+            <span>Zaten hesabın var mı?</span>
+            <a href="{{ url_for('login') }}">Giriş yap</a>
+        </div>
+
+    </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='auth-effects.js') }}"></script>
+
+</body>
+</html>
