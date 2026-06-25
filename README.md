@@ -1,5 +1,5 @@
 # LockFile
-# LockFile (pi_vault) - Güvenli Dosya Şifreleme ve Depolama Sistemi
+# LockFile - Güvenli Dosya Şifreleme ve Depolama Sistemi
 
 Bu proje, hassas dosyaları gelişmiş kriptografik yöntemlerle şifrelemek, saklamak ve yetkisiz erişimleri engellemek amacıyla geliştirilmiş güvenli bir dosya kasası uygulamasıdır. Proje, hem backend şifreleme motorunu hem de kullanıcı dostu bir web arayüzünü içerir.
 
