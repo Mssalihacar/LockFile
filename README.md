@@ -15,12 +15,3 @@ Bu proje, hassas dosyaları gelişmiş kriptografik yöntemlerle şifrelemek, sa
 * **Web Framework:** Flask
 * **Kriptografi:** `cryptography` kütüphanesi
 * **Veritabanı:** SQLite3
-
-## 📦 Kurulum ve Çalıştırma
-
-Projeyi yerel bilgisayarınızda veya bir Raspberry Pi üzerinde çalıştırmak için aşağıdaki adımları takip edebilirsiniz.
-
-### 1. Depoyu Klonlayın
-```bash
-git clone [https://github.com/Mssalihacar/LockFile.git](https://github.com/Mssalihacar/LockFile.git)
-cd LockFile
